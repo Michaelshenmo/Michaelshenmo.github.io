@@ -27,29 +27,48 @@
     <div class="col-lg-6 col-md-9 mx-auto my-5 input-card">
         <div class="card">
             <div class="card-header bg-dark text-light">登录</div>
-            <div class="card-body">
-                <div class="form-group my-2">
+                <div class="card-body">
                     <div class="form-group my-2">
-                        <input type="text" class="form-control" id="username" name="username" placeholder="用户名" spellcheck="false" data-ms-editor="true">
+                        <div class="form-group my-2">
+                            <input type="text" class="form-control" id="username" name="username" placeholder="用户名" spellcheck="false" data-ms-editor="true">
+                        </div>
+                        <div class="form-group my-2">
+                            <input type="password" class="form-control" id="password" name="password" placeholder="密码" spellcheck="false" data-ms-editor="true">
+                        </div>
                     </div>
                     <div class="form-group my-2">
-                        <input type="password" class="form-control" id="password" name="password" placeholder="密码" spellcheck="false" data-ms-editor="true">
+                        <button type="button" onclick="submitForm()" class="form-control btn btn-success btn-block">
+                            登录
+                        </button>
                     </div>
-                    
                 </div>
-                <div class="form-group my-2">
-                    <button type="button" onclick="submitForm()" class="form-control btn btn-success btn-block">
-                        登录
-                    </button>
+            </div>
+        </div>
+    </div>
+    <div class="container" aria-hidden="true">
+        <div class="row justify-content-center">
+    <div class="col-lg-6 col-md-9 mx-auto my-5 input-card">
+        <div class="card">
+            <div class="card-header bg-dark text-light">更多信息</div>
+                <div class="card-body">
+                    <div class="form-group my-2">
+                        <button type="button" onclick="About()" class="form-control">
+                            关于
+                        </button>
+                    </div>
                 </div>
+            </div>
+        </div>
+    </div>
+    
                 <script>
                     Swal.fire({
                         toast: true,
                         position: 'top-end',
                         showConfirmButton: false,
-                        timer: 3000,
-                        type: 'success',
-                        title: 'Welcome'
+                        timer: 5000,
+                        icon: 'info',
+                        title: 'Welcome! \n本网页用于由bilibili@小白拆解日记(UID:1455225273)与@不爱学习的岚岚(UID:3461570036238869)共同制作的[土拨鼠大战臭老鼠]\n该登录页面由@小白拆解日记制作'
                     })
 
                     function submitForm(){
@@ -66,6 +85,13 @@
                         else {  
                             Swal.fire("登录失败", "用户名或密码错误！", "error");  
                         }  
+                    }
+                    function About(){
+                        Swal.fire({
+                            title: "关于",
+                            text: "本网页用于由bilibili@小白拆解日记(UID:1455225273)与@不爱学习的岚岚(UID:3461570036238869)共同制作的[土拨鼠大战臭老鼠]\n该登录页面由@小白拆解日记制作",
+                            icon: "info"
+                        });
                     }
                 </script>
             </div>
