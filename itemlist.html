@@ -30,7 +30,7 @@
                 <div class="card-body">
                     <div class="form-group my-2">
                         <button type="button" onclick="Start()" class="form-control btn btn-success btn-block">
-                            ▶启动游戏
+                            ▷启动游戏
                         </button>
                     </div>
                     <div class="form-group my-2">
@@ -46,6 +46,11 @@
                     <div class="form-group my-2">
                         <button type="button" onclick="About()" class="form-control">
                             关于
+                        </button>
+                    </div>
+                    <div class="form-group my-2">
+                        <button type="button" onclick="Logout()" class="form-control">
+                            ⇱退出登录
                         </button>
                     </div>
                 </div>
@@ -69,6 +74,15 @@
                             text: "本网页用于由bilibili@小白拆解日记(UID:1455225273)与@不爱学习的岚岚(UID:3461570036238869)共同制作的[土拨鼠大战臭老鼠]\n该页面由@小白拆解日记制作",
                             icon: "info"
                         });
+                    }
+                    function Logout(){
+                        Swal.fire({
+                            title: "提示",
+                            text: "正在退出……",
+                            icon: "info"
+                        });
+                        Swal.showLoading();
+                        window.location.href = "https://michaelshenmo.github.io";
                     }
                 </script>
             </div>
