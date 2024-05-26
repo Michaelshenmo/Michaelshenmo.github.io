@@ -17,6 +17,7 @@
 	<script src="https://fastly.jsdelivr.net/npm/sweetalert2@10.14.0/dist/sweetalert2.min.js"></script>
 	<script src="https://fastly.jsdelivr.net/npm/jquery-form@4.3.0/dist/jquery.form.min.js"></script>
 	<script src="../static/color.js?v=4.0.3"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>  
 <body class="">
     <div class="container" aria-hidden="true">
@@ -90,13 +91,25 @@
                         });
                     }
                     function Logout(){
-                        Swal.fire({
-                            title: "提示",
-                            text: "正在退出……",
-                            icon: "info"
+                        swal({
+                            title: "确认",
+                            text: "是否确定退出登录？",
+                            icon: "warning",
+                            buttons: true,
+                            buttons: ["取消", "退出登录"],
+                            dangerMode: true,
+                            })
+                            .then((willLogout) => {
+                            if (willLogout) {
+                                Swal.fire({
+                                    title: "提示",
+                                    text: "正在退出……",
+                                    icon: "info"
+                                });
+                                Swal.showLoading();
+                                window.location.href = "https://michaelshenmo.github.io";
+                            }
                         });
-                        Swal.showLoading();
-                        window.location.href = "https://michaelshenmo.github.io";
                     }
                 </script>
             </div>
