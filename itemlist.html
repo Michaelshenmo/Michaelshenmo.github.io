@@ -59,10 +59,19 @@
     </div>
     
                 <script>
+                    function Feedback(){
+                        Swal.fire({
+                            title: "提示",
+                            text: "你将前往TBSvs.CLS的issue页面，如果无法打开，请尝试使用加速器或VPN。",
+                            icon: "info"
+                        });
+                        Swal.showLoading();
+                        window.location.href = "https://github.com/Michaelshenmo/TBSvs.CLS/issues";
+                    }
                     function GithubHome(){
                         Swal.fire({
                             title: "提示",
-                            text: "你将前往michaelshenmo的Github主页，如果无法打开，请尝试使用加速器或VPN",
+                            text: "你将前往michaelshenmo的Github主页，如果无法打开，请尝试使用加速器或VPN。",
                             icon: "info"
                         });
                         Swal.showLoading();
