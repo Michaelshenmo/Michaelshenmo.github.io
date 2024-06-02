@@ -65,6 +65,15 @@
                         icon: 'success',
                         title: '登录成功！'
                     })
+                    function Start(){
+                        Swal.fire({
+                            title: "提示",
+                            text: "正在启动…",
+                            icon: "info"
+                        });
+                        Swal.showLoading();
+                        window.location.href = "https://michaelshenmo.github.io/TBSvs.CLS";
+                    }
                     function Feedback(){
                         Swal.fire({
                             title: "提示",
