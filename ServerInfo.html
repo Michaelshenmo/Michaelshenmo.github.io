@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MC服务器状态</title>
+    <style>
+        .server-card {
+            max-width: 400px;
+            background: #2c2f33;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .online {
+            background: #3ba55d;
+        }
+
+        .offline {
+            background: #ed4245;
+        }
+
+        .server-info {
+            margin: 10px 0;
+        }
+
+        .info-label {
+            color: #b9bbbe;
+            margin-right: 8px;
+        }
+
+        .player-list {
+            background: #202225;
+            border-radius: 8px;
+            padding: 10px;
+            margin-top: 15px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="server-card">
+        <div class="status-indicator">
+            <div class="status-dot offline"></div>
+            <h2>服务器状态加载中...</h2>
+        </div>
+        <div class="loading">正在获取服务器数据...</div>
+    </div>
+
+    <script>
+        // API请求地址
+        const API_URL = 'https://api.mcstatus.io/v2/status/java/mc.incrafttime.top';
+
+        // 获取DOM元素
+        const card = document.querySelector('.server-card');
+        const statusDot = document.querySelector('.status-dot');
+        const loading = document.querySelector('.loading');
+
+        // 获取服务器数据
+        fetch(API_URL)
+            .then(response => response.json())
+            .then(data => {
+                loading.remove();
+                updateServerStatus(data);
+            })
+            .catch(error => {
+                loading.textContent = '无法获取服务器状态';
+                console.error('Error:', error);
+            });
+
+        // 更新服务器状态显示
+        function updateServerStatus(data) {
+            // 更新在线状态
+            const isOnline = data.online;
+            statusDot.className = `status-dot ${isOnline ? 'online' : 'offline'}`;
+            
+            // 更新状态文字
+            const statusText = isOnline ? 
+                `<span style="color: #3ba55d">在线</span>` : 
+                `<span style="color: #ed4245">离线</span>`;
+            
+            card.querySelector('h2').innerHTML = `
+                ${data.host} 状态：${statusText}
+            `;
+
+            // 服务器信息容器
+            const infoContainer = document.createElement('div');
+            
+            // 基础信息
+            infoContainer.innerHTML = `
+                <div class="server-info">
+                    <span class="info-label">版本:</span> ${data.version?.name_clean || '未知'}
+                </div>
+                <div class="server-info">
+                    <span class="info-label">在线玩家:</span> 
+                    ${data.players?.online || 0}/${data.players?.max || 0}
+                </div>
+            `;
+
+            // 玩家列表（如果在线）
+            if (isOnline && data.players?.list) {
+                const playerList = document.createElement('div');
+                playerList.className = 'player-list';
+                playerList.innerHTML = `
+                    <div class="info-label">在线玩家列表：</div>
+                    ${data.players.list.map(player => `
+                        <div>${player.name_clean}</div>
+                    `).join('')}
+                `;
+                infoContainer.appendChild(playerList);
+            }
+
+            card.appendChild(infoContainer);
+        }
+    </script>
+</body>
+</html>
