@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MC服务器状态</title>
+    <title>InCraftTime服务器状态</title>
     <style>
         .server-card {
             max-width: 400px;
@@ -29,16 +29,12 @@
             margin-right: 10px;
         }
 
-        .online {
-            background: #3ba55d;
-        }
-
-        .offline {
-            background: #ed4245;
-        }
+        .online { background: #3ba55d; }
+        .offline { background: #ed4245; }
 
         .server-info {
             margin: 10px 0;
+            line-height: 1.6;
         }
 
         .info-label {
@@ -58,6 +54,13 @@
         .loading {
             text-align: center;
             padding: 20px;
+            color: #888;
+        }
+
+        .player-percent {
+            color: #888;
+            font-size: 0.9em;
+            margin-left: 8px;
         }
     </style>
 </head>
@@ -71,56 +74,50 @@
     </div>
 
     <script>
-        // API请求地址
         const API_URL = 'https://api.mcstatus.io/v2/status/java/mc.incrafttime.top';
 
-        // 获取DOM元素
         const card = document.querySelector('.server-card');
         const statusDot = document.querySelector('.status-dot');
         const loading = document.querySelector('.loading');
 
-        // 获取服务器数据
-        fetch(API_URL)
-            .then(response => response.json())
-            .then(data => {
-                loading.remove();
-                updateServerStatus(data);
-            })
-            .catch(error => {
-                loading.textContent = '无法获取服务器状态';
-                console.error('Error:', error);
-            });
+        function calculatePercentage(online, max) {
+            return max > 0 ? ((online / max) * 100).toFixed(1) : '0.0';
+        }
 
-        // 更新服务器状态显示
         function updateServerStatus(data) {
-            // 更新在线状态
+            // 更新基础状态
             const isOnline = data.online;
             statusDot.className = `status-dot ${isOnline ? 'online' : 'offline'}`;
             
-            // 更新状态文字
-            const statusText = isOnline ? 
-                `<span style="color: #3ba55d">在线</span>` : 
-                `<span style="color: #ed4245">离线</span>`;
-            
+            // 构建状态文本
+            const statusColor = isOnline ? '#3ba55d' : '#ed4245';
             card.querySelector('h2').innerHTML = `
-                ${data.host} 状态：${statusText}
+                ${data.host} 状态: 
+                <span style="color: ${statusColor}">${isOnline ? '在线' : '离线'}</span>
             `;
 
-            // 服务器信息容器
+            // 创建信息容器
             const infoContainer = document.createElement('div');
             
-            // 基础信息
+            // 计算玩家百分比
+            const onlinePlayers = data.players?.online || 0;
+            const maxPlayers = data.players?.max || 0;
+            const playerPercentage = calculatePercentage(onlinePlayers, maxPlayers);
+
+            // 填充服务器信息
             infoContainer.innerHTML = `
                 <div class="server-info">
-                    <span class="info-label">版本:</span> ${data.version?.name_clean || '未知'}
+                    <span class="info-label">版本:</span> 
+                    ${data.version?.name_clean || '未知'}
                 </div>
                 <div class="server-info">
-                    <span class="info-label">在线玩家:</span> 
-                    ${data.players?.online || 0}/${data.players?.max || 0}
+                    <span class="info-label">在线玩家:</span>
+                    ${onlinePlayers}/${maxPlayers}
+                    <span class="player-percent">(${playerPercentage}%)</span>
                 </div>
             `;
 
-            // 玩家列表（如果在线）
+            // 添加玩家列表（仅在线时显示）
             if (isOnline && data.players?.list) {
                 const playerList = document.createElement('div');
                 playerList.className = 'player-list';
@@ -133,8 +130,25 @@
                 infoContainer.appendChild(playerList);
             }
 
+            // 移除加载提示并插入新内容
+            loading.remove();
             card.appendChild(infoContainer);
         }
+
+        // 获取服务器数据
+        fetch(API_URL)
+            .then(response => {
+                if (!response.ok) throw new Error('网络响应异常');
+                return response.json();
+            })
+            .then(updateServerStatus)
+            .catch(error => {
+                loading.textContent = '服务器状态获取失败';
+                console.error('错误详情:', error);
+            });
+
+        // 可选：添加定时刷新（每30秒）
+        // setInterval(() => fetch(API_URL).then(res => res.json()).then(updateServerStatus), 30000);
     </script>
 </body>
 </html>
