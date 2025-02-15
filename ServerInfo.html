@@ -48,14 +48,8 @@
             transition: background 0.3s ease;
         }
 
-        .refresh-btn:hover {
-            background: #4752c4;
-        }
-
-        .refresh-btn:disabled {
-            background: #40444b;
-            cursor: not-allowed;
-        }
+        .refresh-btn:hover { background: #4752c4; }
+        .refresh-btn:disabled { background: #40444b; cursor: not-allowed; }
 
         .server-info {
             margin: 10px 0;
@@ -87,6 +81,27 @@
             font-size: 0.9em;
             margin-left: 8px;
         }
+
+        .progress-container {
+            width: 100%;
+            height: 8px;
+            background: #202225;
+            border-radius: 4px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: #3ba55d;
+            border-radius: 4px;
+            width: 0;
+            transition: width 0.5s ease, background 0.3s ease;
+        }
+
+        .progress-bar.high-usage {
+            background: #ed4245;
+        }
     </style>
 </head>
 <body>
@@ -105,8 +120,6 @@
         const API_URL = 'https://api.mcstatus.io/v2/status/java/mc.incrafttime.top';
         const card = document.querySelector('.server-card');
         const refreshBtn = document.querySelector('.refresh-btn');
-
-        fetchData();
 
         async function fetchData() {
             try {
@@ -155,7 +168,6 @@
             `;
 
             const infoContainer = document.createElement('div');
-            
             const online = data.players?.online || 0;
             const max = data.players?.max || 0;
             const percent = max > 0 ? ((online / max) * 100).toFixed(1) : '0.0';
@@ -169,8 +181,16 @@
                     <span class="info-label">在线玩家:</span>
                     ${online}/${max}
                     <span class="player-percent">(${percent}%)</span>
+                    <div class="progress-container">
+                        <div class="progress-bar" id="player-progress"></div>
+                    </div>
                 </div>
             `;
+
+            const progressBar = infoContainer.querySelector('#player-progress');
+            const percentage = max > 0 ? (online / max) : 0;
+            progressBar.style.width = `${percentage * 100}%`;
+            progressBar.classList.toggle('high-usage', percentage >= 0.8);
 
             if (isOnline && data.players?.list?.length > 0) {
                 const playerList = document.createElement('div');
@@ -186,6 +206,8 @@
 
             card.appendChild(infoContainer);
         }
+
+        fetchData();
     </script>
 </body>
 </html>
