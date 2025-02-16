@@ -99,6 +99,10 @@
             transition: width 0.5s ease, background 0.3s ease;
         }
 
+        .progress-bar.medium-usage {
+            background: #faa81a;
+        }
+
         .progress-bar.high-usage {
             background: #ed4245;
         }
@@ -190,7 +194,13 @@
             const progressBar = infoContainer.querySelector('#player-progress');
             const percentage = max > 0 ? (online / max) : 0;
             progressBar.style.width = `${percentage * 100}%`;
-            progressBar.classList.toggle('high-usage', percentage >= 0.8);
+            
+            progressBar.className = 'progress-bar';
+            if (percentage >= 0.9) {
+                progressBar.classList.add('high-usage');
+            } else if (percentage >= 0.8) {
+                progressBar.classList.add('medium-usage');
+            }
 
             if (isOnline && data.players?.list?.length > 0) {
                 const playerList = document.createElement('div');
