@@ -6,7 +6,7 @@
     <title>InCraftTime服务器状态</title>
     <style>
         .server-card {
-            max-width: 450px;
+            max-width: 500px;
             background: #2c2f33;
             border-radius: 12px;
             padding: 20px;
@@ -177,6 +177,10 @@
             const percent = max > 0 ? ((online / max) * 100).toFixed(1) : '0.0';
 
             infoContainer.innerHTML = `
+                <div class="server-info">
+                    <span class="info-label">MOTD:</span>
+                    ${data.motd.html}
+                </div>
                 <div class="server-info">
                     <span class="info-label">版本:</span> 
                     ${data.version?.name_clean || '未知'}
