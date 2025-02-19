@@ -66,6 +66,14 @@
                         icon: 'info',
                         title: 'Welcome! \n本网页用于由bilibili@小白拆解日记(UID:1455225273)与@不爱学习的岚岚(UID:3461570036238869)共同制作的[土拨鼠大战臭老鼠]\n该登录页面由@小白拆解日记制作'
                     })
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 5000,
+                        icon: 'warning',
+                        title: '此仅为演示页面，不作为真实用途'
+                    })
 
                     function submitForm(){
                         var username = document.getElementById('username').value;  
