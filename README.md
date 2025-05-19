@@ -16,6 +16,6 @@
 
 这里是Michaelshenmo的页面，可以在里面找到一些小项目！
 
-点击[这里](https://michaelshenmo.github.io/)查看。
+点击[这里](https://michaelshenmo.github.io/)查看
 
 <br/>
